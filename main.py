@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from emotion import getEmotion
 app = Flask("Website")
 
 @app.route('/')
@@ -8,5 +9,6 @@ def hello_world():
 @app.route('/results', methods=['POST'])
 def results():
     url = request.form['urlname']
-    return render_template("imageurl.html", url = url)
+    emotionStats = getEmotion(url)
+    return render_template("imageurl.html", emotionStats = emotionStats, url = url)
 
