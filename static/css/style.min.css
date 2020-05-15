@@ -8911,9 +8911,9 @@ span.em-icon {
     padding-top:5px
 }
 
-.emoji-list ul {
-    display:inline
-}
+/* .emoji-list ul {
+    display:inline;
+} */
 
 .section-wrapper.right > div:not(:first-child) {
     padding-top:20px
