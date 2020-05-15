@@ -1,4 +1,4 @@
-import settings
+# import settings
 from flask import Flask, render_template, request
 from emotion import getEmotion, getEmoji
 
