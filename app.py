@@ -2,7 +2,7 @@ import settings
 from flask import Flask, render_template, request
 from emotion import getEmotion, getEmoji
 
-app = Flask("Website")
+app = Flask(__name__)
 
 @app.route('/')
 def hello_world():

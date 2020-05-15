@@ -1,10 +1,22 @@
-
 <!DOCTYPE html>
 <html>
 
 <head>
+    <title>Emotion Emoji Detector</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/mystyles.css') }}">
+
+    <script>
+        function copyEmoji(emoji) {
+            var elem = document.createElement("textarea");
+            document.body.appendChild(elem);
+            elem.value = emoji;
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            alert("Copied emoji: " + emoji);
+        }
+    </script>
 </head>
 
 <body>
@@ -17,10 +29,10 @@
                 <ul class="emojilist">
                     {%for x in emoji%}
                     <li title="{{x}}" data-value="{{x}}">
-                        <!-- <a href="https://www.emojis.com/meaning/euro-banknote-emoji/"> -->
-                        <p>{{x}}</p>
-                        <p></p>
-                        <!-- </a> -->
+                        <button onclick="copyEmoji('{{x}}')">
+                            <p id="{{x}}">{{x}}</p>
+                            <p></p>
+                        </button>
                     </li>
                     {% endfor %}
                 </ul>
@@ -29,16 +41,21 @@
     </div>
     <table>
         <h1>{{'Emotion Distributions'}}</h1>
-        <thead><tr><th>Emotion</th><th>Percentage</th></tr></thead>
+        <thead>
+            <tr>
+                <th>Emotion</th>
+                <th>Percentage</th>
+            </tr>
+        </thead>
         <tbody>
-        {% for key, value in emotionStats.items() %}
-           <tr>
+            {% for key, value in emotionStats.items() %}
+            <tr>
                 <th> {{ key }} </th>
-                <td> {{ value }} </td>
-           </tr>
-        {% endfor %}
+                <td> {{ "{:.0f}%".format(value * 100) }} </td>
+            </tr>
+            {% endfor %}
         </tbody>
-        </table>
+    </table>
     <!-- <p>{{emotionStats}}</p> -->
 </body>
 
