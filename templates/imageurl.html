@@ -1,8 +1,48 @@
 <!DOCTYPE html>
 <html>
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">
+</head>
+
 <body>
-<img src = "{{url}}">
-<p>"{{emotionStats}}"</p>
-<p>"{{emoji}}"</p>
-<html>
-<body>
+    <div class="emoji-list">
+        <ul>
+            <li title="💶 euro banknote" data-value="💶">
+                <a href="https://www.emojis.com/meaning/euro-banknote-emoji/">
+                    <p>{{emoji[0]}}</p>
+                    <p></p>
+                </a>
+            </li>
+            <li title="🍛 curry rice" data-value="🍛">
+                <a href="https://www.emojis.com/meaning/curry-rice-emoji/">
+                    <p>{{emoji[1]}}</p>
+                    <p></p>
+                </a>
+            </li>
+            <li title="💒 wedding" data-value="💒">
+                <a href="https://www.emojis.com/meaning/wedding-emoji/">
+                    <p>{{emoji[2]}}</p>
+                    <p></p>
+                </a>
+            </li>
+            <li title="🕡 six-thirty" data-value="🕡" class="six-thirty-emoji">
+                <a href="https://www.emojis.com/meaning/six-thirty-emoji/">
+                    <p>{{emoji[3]}}</p>
+                    <p></p>
+                </a>
+            </li>
+            <li title="💽 computer disk" data-value="💽" class="computer-disk-emoji">
+                <a href="https://www.emojis.com/meaning/computer-disk-emoji/">
+                    <p>{{emoji[4]}}</p>
+                    <p></p>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <img src="{{url}}">
+    <p>"{{emotionStats}}"</p>
+    <p>"{{emoji}}"</p>
+</body>
+
+</html>
