@@ -31,6 +31,7 @@ def getEmoji(feeling):
     }
     response = requests.get(emoji_url,params=params)
     emojis = []
+    print(response.json())
     for item in response.json():
         character = item['character'] 
         emojis.append(character)
