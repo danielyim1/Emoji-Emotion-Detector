@@ -1,5 +1,7 @@
+import settings
 from flask import Flask, render_template, request
-from emotion import getEmotion
+from emotion import getEmotion, getEmoji
+
 app = Flask("Website")
 
 @app.route('/')
@@ -10,5 +12,7 @@ def hello_world():
 def results():
     url = request.form['urlname']
     emotionStats = getEmotion(url)
-    return render_template("imageurl.html", emotionStats = emotionStats, url = url)
+    emoji = getEmoji('smiling')
+    return render_template("imageurl.html", emotionStats = emotionStats, emoji=emoji,url = url)
 
+    
