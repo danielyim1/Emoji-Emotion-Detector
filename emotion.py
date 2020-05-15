@@ -23,6 +23,7 @@ def getEmotion(image_url):
 
 EMOJIKEY = os.environ['EMOJIKEY']  
 def getEmoji(feeling):
+    print(feeling)
     emoji_url = "https://emoji-api.com/emojis"
     params = {
         'access_key': EMOJIKEY, 

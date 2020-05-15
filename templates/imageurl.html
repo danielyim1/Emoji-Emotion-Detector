@@ -1,8 +1,25 @@
 <!DOCTYPE html>
 <html>
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/myStyles.css') }}">
+</head>
+
 <body>
-<img src = "{{url}}">
-<p>"{{emotionStats}}"</p>
-<p>"{{emoji}}"</p>
-<html>
-<body>
+    <div>
+        <!-- <button type="button" class="btn btn-default">💶</button>
+        <button type="button" class="btn btn-default">💶</button>
+        <button type="button" class="btn btn-default">💶</button> -->
+        <ul class="emojilist">
+            {%for x in emoji%}
+                <li>{{x}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <img src="{{url}}">
+    <p>{{emotionStats}}</p>
+    <p>{{emoji}}</p>
+</body>
+
+</html>
