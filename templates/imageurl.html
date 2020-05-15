@@ -7,18 +7,24 @@
 </head>
 
 <body>
-    <img src="{{url}}">
-    <div class="emoji-list">
-        <ul class="emojilist">
-            {%for x in emoji%}
-            <li title="{{x}}" data-value="{{x}}">
-                <!-- <a href="https://www.emojis.com/meaning/euro-banknote-emoji/"> -->
-                <p>{{x}}</p>
-                <p></p>
-                <!-- </a> -->
-            </li>
-            {% endfor %}
-        </ul>
+    <div>
+        <span class="horizontalImage">
+            <img src="{{url}}">
+        </span>
+        <span class="horizontalEmojis">
+            <div class="emoji-list">
+                <ul class="emojilist">
+                    {%for x in emoji%}
+                    <li title="{{x}}" data-value="{{x}}">
+                        <!-- <a href="https://www.emojis.com/meaning/euro-banknote-emoji/"> -->
+                        <p>{{x}}</p>
+                        <p></p>
+                        <!-- </a> -->
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </span>
     </div>
     <p>{{emotionStats}}</p>
 </body>
