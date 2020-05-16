@@ -5,7 +5,7 @@ import random
 import os
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'uploads/'
+app.config['UPLOAD_FOLDER'] = 'tmp/'
 
 
 def getRandomFilename():
