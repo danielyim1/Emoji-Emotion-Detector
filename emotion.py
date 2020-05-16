@@ -18,7 +18,7 @@ def getEmotion(image_url):
 
     response = requests.post(face_api_url, params=params,
                             headers=headers, json={"url": image_url})
-    print(json.dumps(response.json()))
+    # print(json.dumps(response.json()))
     return response.json()[0]['faceAttributes']['emotion']
 
 EMOJIKEY = os.environ['EMOJIKEY']  
