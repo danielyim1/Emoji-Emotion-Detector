@@ -4,9 +4,10 @@
 
 <h1>Emoji Detection Software</h1>
 
-<form action="/results" method="POST"> 
+<form action="/results" method="POST" enctype = "multipart/form-data"> 
   <label for="urlname">Enter the url: </label>
   <input type="text" id="urlname" name="urlname"><br><br>
+  <input type="file" id="localFile" name="filename">
   <input type="submit" value="Submit">
 </form>
 

@@ -36,3 +36,20 @@ def getEmoji(feeling):
         character = item['character'] 
         emojis.append(character)
     return emojis
+
+def getCameraEmotion(local_url):
+    face_api_url = 'https://emojidetector.cognitiveservices.azure.com/face/v1.0/detect'
+
+    params = {
+        'returnFaceId': 'false',
+        'returnFaceLandmarks': 'false',
+        'returnFaceAttributes': 'emotion',
+    }
+
+    headers = {'Content-Type': 'application/octet-stream', 
+                    'Ocp-Apim-Subscription-Key': KEY
+    }
+    data = open(local_url, 'rb')
+    response = requests.post(face_api_url , headers=headers, data=data,params=params)
+    return response.json()[0]['faceAttributes']['emotion']
+
