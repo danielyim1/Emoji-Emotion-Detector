@@ -1,16 +1,11 @@
-#import settings
+import settings
 from flask import Flask, render_template, request, url_for, send_from_directory, after_this_request
 from emotion import getEmotion, getEmoji, getCameraEmotion
-import random
+from s3 import pictureUpload
 import os
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = '/tmp/'
-
-
-def getRandomFilename():
-    return str(random.randint(1000000, 9999999))
-
 
 @app.route('/')
 def hello_world():
@@ -32,10 +27,12 @@ def results():
     url = request.form['urlname']
     if url == '':  # for picture uploads
         f = request.files['filename']
-        randomFilename = getRandomFilename() + '.jpeg'
-        url = app.config['UPLOAD_FOLDER'] + randomFilename
-        f.save(url)
-        emotionStats = getCameraEmotion(url)
+        # randomFilename = getRandomFilename() + '.jpeg'
+        # url = app.config['UPLOAD_FOLDER'] + randomFilename
+        pic = pictureUpload(f)
+        
+        url = "https://emojidetector.s3.us-east-2.amazonaws.com/" + pic 
+        emotionStats = getEmotion(url)
     else:
         emotionStats = getEmotion(url)
     maxValue = 0
