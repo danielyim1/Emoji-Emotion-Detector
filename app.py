@@ -1,6 +1,6 @@
-import settings
+# import settings
 from flask import Flask, render_template, request, url_for, send_from_directory, after_this_request
-from emotion import getEmotion, getEmoji, getCameraEmotion
+from emotion import getEmotion, getEmoji
 from s3 import pictureUpload
 import os
 
