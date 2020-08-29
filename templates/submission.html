@@ -1,17 +1,96 @@
 <!DOCTYPE html>
 <html>
+
+<head>
+  <title>Emotion Emoji Detector</title>
+  <!-- https://stackoverflow.com/questions/42601478/flask-calling-python-function-on-button-onclick-event -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script type=text/javascript>
+    $(function() {
+      var baseUrl;
+      if (location.port) {
+          baseUrl = "http://" + document.domain + ":" + location.port;
+      } else {
+          baseUrl = "https://" + document.domain;
+      }
+
+      function validateForm() {
+        if ($('#urlname').val()=="" && $('#localFile').val()=="") {
+          $('#form-error')[0].style.display = "block";
+          $('#form-error').text("Please enter a url or upload a photo");
+          return false;
+        }
+        return true;
+      }
+      
+      $("#detect").click(function(event) {
+        event.preventDefault(); // cancel default behavior
+        if (validateForm()) {
+          $('#form').submit();
+        }
+      });
+      
+      $("#home").click(function(event) {
+        window.location.href = baseUrl;
+      });
+
+      window.uploadFile = function() {
+        console.log('set local file');
+        $('#localFilename').text($('#localFile').val().replace(/^.*[\\\/]/, ''));
+      };
+    });
+  </script>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+    integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/mystyle.css') }}">
+</head>
+
 <body>
 
-<h1>Emoji Detection Software</h1>
+  <div class="text-center">
+    <button class="btn shadow-none text-center" id="home">
+      <h1>Emotion Emoji Detector</h1>
+    </button>
+  </div>
+  <br />
 
-<form action="/results" method="POST" enctype = "multipart/form-data"> 
-  <label for="urlname">Enter the url: </label>
-  <input type="text" id="urlname" name="urlname"><br><br>
-  <input type="file" id="localFile" name="filename">
-  <input type="submit" value="Submit">
-</form>
+  <div class="text-center">
+    <h4>Paste photo URL:</h4>
+  </div>
 
-<p>Click on the submit button to submit the url.</p>
+  <form action="/results" method="POST" enctype="multipart/form-data" id="form">
+
+    <div class="col-centered input-group mb-3 width-medium">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">Photo URL</span>
+      </div>
+      <input id="urlname" name="urlname" type="text" class="form-control" placeholder="" aria-label="Name"
+        aria-describedby="basic-addon1">
+    </div>
+
+    <div class="text-center">
+      <h4>or upload photo:</h4>
+    </div>
+
+    <div class="custom-file width-medium button-center">
+      <input type="file" class="custom-file-input" id="localFile" name="filename" onchange="uploadFile()">
+      <label class="custom-file-label" for="filename" id="localFilename">Choose file...</label>
+    </div>
+    <div class="text-center">
+      <div class="invalid-feedback error" id="form-error">Example invalid feedback</div>
+    </div>
+    <br />
+
+    <button id="detect" class="btn btn-primary align-middle button-large button-center">
+      Detect Emoji
+    </button>
+  </form>
 
 </body>
+
 </html>

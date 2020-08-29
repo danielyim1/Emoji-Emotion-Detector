@@ -1,62 +1,139 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <title>Emotion Emoji Detector</title>
+        <script src="{{ url_for('static',filename='js/Chart.bundle.js') }}"></script>
+        <!-- https://stackoverflow.com/questions/42601478/flask-calling-python-function-on-button-onclick-event -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type=text/javascript>
+            function copyEmoji(emoji) {
+                var elem = document.createElement("textarea");
+                document.body.appendChild(elem);
+                elem.value = emoji;
+                elem.select();
+                document.execCommand("copy");
+                document.body.removeChild(elem);
+                alert("Copied emoji: " + emoji);
+            }
 
-<head>
-    <title>Emotion Emoji Detector</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/mystyles.css') }}">
+            function onResize(chart, size) {
+                // chart.canvas.parentNode.style.height = size.width;
+                console.log(size);
+                $('#chart-div').height(size.width);
+            }
+            
+            $(function() {
+                var baseUrl;
+                if (location.port) {
+                    baseUrl = "http://" + document.domain + ":" + location.port;
+                } else {
+                    baseUrl = "https://" + document.domain;
+                }
+        
+                $("#home").click(function(event) {
+                    window.location.href = baseUrl;
+                });
 
-    <script>
-        function copyEmoji(emoji) {
-            var elem = document.createElement("textarea");
-            document.body.appendChild(elem);
-            elem.value = emoji;
-            elem.select();
-            document.execCommand("copy");
-            document.body.removeChild(elem);
-            alert("Copied emoji: " + emoji);
-        }
-    </script>
-</head>
+                var emotionStats = JSON.parse($('#myChart').attr('data').split("'").join('"'));
+                new Chart(document.getElementById('myChart'), {
+                    type: "radar",
+                    data: {
+                        labels: Object.keys(emotionStats),
+                        datasets: [{
+                            data: Object.values(emotionStats).map(x => x * 100),
+                            fill: true,
+                            backgroundColor: "rgba(255, 99, 132, 0.2)",
+                            borderColor: "rgb(255, 99, 132)",
+                            pointBackgroundColor: "rgb(255, 99, 132)",
+                            pointBorderColor: "#fff",
+                            pointHoverBackgroundColor: "#fff",
+                            pointHoverBorderColor: "rgb(255, 99, 132)"
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        onResize: onResize,
+                        elements: {
+                            line: {
+                                tension: 0,
+                                borderWidth: 3
+                            }
+                        },
+                        scale: {
+                            pointLabels: {
+                                fontSize: 15
+                            },
+                            angleLines: {
+                                display: false
+                            },
+                            ticks: {
+                                min: 0,
+                                max: 100,
+                                stepSize: 20,
+                                backdropColor: "#e9ecef"
+                            }
+                        },
+                        legend: {
+                            display: false
+                        }
+                    }
+                });
+            });
+        </script>
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+            integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/mystyle.css') }}">
+    </head>
 
 <body>
-    <div>
-        <span class="horizontalImage">
-            <img src="{{url}}">
-        </span>
-        <span class="horizontalEmojis">
-            <div class="emoji-list">
-                <ul class="emojilist">
-                    {%for x in emoji%}
-                    <li title="{{x}}" data-value="{{x}}">
-                        <button onclick="copyEmoji('{{x}}')">
-                            <p id="{{x}}">{{x}}</p>
-                            <p></p>
-                        </button>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </span>
+    <div class="text-center">
+      <button class="btn shadow-none text-center" id="home">
+        <h1>Emotion Emoji Detector</h1>
+      </button>
     </div>
-    <table>
-        <h1>{{'Emotion Distributions'}}</h1>
-        <thead>
-            <tr>
-                <th>Emotion</th>
-                <th>Percentage</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for key, value in emotionStats.items() %}
-            <tr>
-                <th> {{ key }} </th>
-                <td> {{ "{:.0f}%".format(value * 100) }} </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <!-- <p>{{emotionStats}}</p> -->
+    <br />
+
+    <div style="display:flex; flex-direction:row; padding-left: 20vw; padding-right: 20vw">
+        <div class="fit-image button-center">
+            <img src="{{url}}" class="img-fluid fit-image button-center">
+        </div>
+        
+        <div style="width: 5vw"></div>
+    
+        <!-- <div class="chart-container button-center" style="position: relative; height:25vw; width:25vw;">
+            <canvas id="myChart" data="{{emotionStats}}"></canvas>
+        </div> -->
+        <!-- <div class="chart-container">
+            <canvas id="myChart" data="{{emotionStats}}"></canvas>
+        </div> -->
+        <div id="chart-div" style="flex: 1; width: 100px; position: relative;">
+            <div class="chart-container">
+                <canvas id="myChart" data="{{emotionStats}}"></canvas>
+            </div>
+        </div>
+    </div>
+    <br />
+
+    <span class="emojis-center">
+        <div class="emoji-list">
+            <ul class="emoji-list button-center">
+                {%for x in emoji%}
+                <li title="{{x}}" data-value="{{x}}" class="emojilist">
+                    <button onclick="copyEmoji('{{x}}')" class="emojilist">
+                        <p id="{{x}}" class="emoji-text">{{x}}</p>
+                        <p></p>
+                    </button>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </span>
 </body>
 
 </html>

@@ -5,22 +5,20 @@ from s3 import pictureUpload
 import os
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = '/tmp/'
+# app.config['UPLOAD_FOLDER'] = '/tmp/'
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def hello_world():
     return render_template('submission.html')
 
-
-@app.route('/uploads/<path:filename>')
-def get_picture(filename):
-    @after_this_request
-    def delete_picture(response):
-        os.remove(app.config['UPLOAD_FOLDER'] + filename)
-        return response
-    return send_from_directory(app.config['UPLOAD_FOLDER'],
-                               filename, as_attachment=False)
-
+# @app.route('/uploads/<path:filename>')
+# def get_picture(filename):
+#     @after_this_request
+#     def delete_picture(response):
+#         os.remove(app.config['UPLOAD_FOLDER'] + filename)
+#         return response
+#     return send_from_directory(app.config['UPLOAD_FOLDER'],
+#                                filename, as_attachment=False)
 
 @app.route('/results', methods=['POST'])
 def results():
@@ -53,6 +51,10 @@ def results():
         "surprise": "astonished"
     }
     emoji = getEmoji(emojiDict[maxKey])
+
     # emotionStats = {'anger': 0.0, 'contempt': 0.0, 'disgust': 0.0, 'fear': 0.0, 'happiness': 1.0, 'neutral': 0.0, 'sadness': 0.0, 'surprise': 0.0}
     # emoji = ['💋', '💌', '💘', '💝', '💖', '💗', '💓', '💞', '💕', '💟', '❣️', '💔', '❤️', '🧡', '💛', '💚', '💙', '💜', '\U0001f90e', '🖤', '\U0001f90d', '💯', '💢', '💥', '💫', '💦', '💨', '🕳️', '💣', '💬', '👁️\u200d🗨️', '🗨️', '🗯️', '💭', '💤']
     return render_template("imageurl.html", emotionStats=emotionStats, emoji=emoji, url=url)
+
+if __name__ == '__main__':
+    app.run(debug=True)
